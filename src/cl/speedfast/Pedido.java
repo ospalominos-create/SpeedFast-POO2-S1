@@ -1,60 +1,46 @@
 package cl.speedfast;
 
-public class Pedido {
+public abstract class Pedido {
 
     private int idPedido;
     private String direccionEntrega;
-    private String tipoPedido;
+    private double distanciaKm;
 
-    public Pedido(int idPedido, String direccionEntrega, String tipoPedido) {
+    public Pedido(int idPedido, String direccionEntrega, double distanciaKm) {
         if (idPedido <= 0) {
             throw new IllegalArgumentException("El idPedido debe ser mayor a 0.");
         }
         if (direccionEntrega == null || direccionEntrega.isBlank()) {
             throw new IllegalArgumentException("La dirección de entrega no puede estar vacía.");
         }
+        if (distanciaKm < 0) {
+            throw new IllegalArgumentException("La distancia no puede ser negativa.");
+        }
         this.idPedido = idPedido;
         this.direccionEntrega = direccionEntrega;
-        this.tipoPedido = tipoPedido;
+        this.distanciaKm = distanciaKm;
     }
 
     public int getIdPedido() {
         return idPedido;
     }
 
-    public void setIdPedido(int idPedido) {
-        this.idPedido = idPedido;
-    }
-
     public String getDireccionEntrega() {
         return direccionEntrega;
     }
 
-    public void setDireccionEntrega(String direccionEntrega) {
-        this.direccionEntrega = direccionEntrega;
+    public double getDistanciaKm() {
+        return distanciaKm;
     }
 
-    public String getTipoPedido() {
-        return tipoPedido;
+    public void mostrarResumen() {
+        System.out.println("Pedido #" + idPedido
+                + " | Tipo: " + obtenerTipoPedido()
+                + " | Dirección: " + direccionEntrega
+                + " | Distancia: " + distanciaKm + " km");
     }
 
-    public void setTipoPedido(String tipoPedido) {
-        this.tipoPedido = tipoPedido;
-    }
+    protected abstract String obtenerTipoPedido();
 
-    public void asignarRepartidor() {
-        System.out.println("Asignación genérica de repartidor para pedido " + idPedido);
-    }
-
-    public void asignarRepartidor(String nombreRepartidor) {
-        asignarRepartidor();
-        System.out.println("   → Repartidor asignado: " + nombreRepartidor);
-    }
-
-    @Override
-    public String toString() {
-        return "Pedido{id=" + idPedido
-                + ", tipo='" + tipoPedido + "'"
-                + ", direccion='" + direccionEntrega + "'}";
-    }
+    public abstract int calcularTiempoEntrega();
 }

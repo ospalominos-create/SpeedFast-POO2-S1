@@ -4,43 +4,37 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("=== SpeedFast: demostración de polimorfismo ===\n");
+        System.out.println("=== SpeedFast: clases abstractas y jerarquía ===\n");
 
         Pedido[] pedidos = crearPedidos();
 
-        demostrarSobrescritura(pedidos);
-        demostrarSobrecarga(pedidos);
-        demostrarToString(pedidos);
+        demostrarResumenYTiempos(pedidos);
+        demostrarComparativa(pedidos);
     }
 
     private static Pedido[] crearPedidos() {
         return new Pedido[] {
-                new PedidoComida(1, "Av. Central 100"),
-                new PedidoEncomienda(2, "Calle Norte 200"),
-                new PedidoExpress(3, "Pasaje Sur 300")
+                new PedidoComida(1, "Av. Central 100", 4.0),
+                new PedidoEncomienda(2, "Calle Norte 200", 8.0),
+                new PedidoExpress(3, "Pasaje Sur 300", 6.5),
+                new PedidoExpress(4, "Diagonal Poniente 400", 5.0)
         };
     }
 
-    private static void demostrarSobrescritura(Pedido[] pedidos) {
-        System.out.println("--- Asignación sin nombre de repartidor ---");
+    private static void demostrarResumenYTiempos(Pedido[] pedidos) {
+        System.out.println("--- Resumen y tiempo estimado de cada pedido ---");
         for (Pedido pedido : pedidos) {
-            pedido.asignarRepartidor();
-        }
-        System.out.println();
-    }
-
-    private static void demostrarSobrecarga(Pedido[] pedidos) {
-        System.out.println("--- Asignación con nombre de repartidor ---");
-        for (Pedido pedido : pedidos) {
-            pedido.asignarRepartidor("Carlos");
-            System.out.println();
+            pedido.mostrarResumen();
+            System.out.println("Tiempo estimado: " + pedido.calcularTiempoEntrega() + " min\n");
         }
     }
 
-    private static void demostrarToString(Pedido[] pedidos) {
-        System.out.println("--- Detalle de cada pedido (toString) ---");
+    private static void demostrarComparativa(Pedido[] pedidos) {
+        System.out.println("--- Comparativa de tiempos ---");
         for (Pedido pedido : pedidos) {
-            System.out.println(pedido);
+            System.out.println(pedido.getClass().getSimpleName()
+                    + " (#" + pedido.getIdPedido() + "): "
+                    + pedido.calcularTiempoEntrega() + " min");
         }
     }
 }

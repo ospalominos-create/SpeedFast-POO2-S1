@@ -2,19 +2,25 @@ package cl.speedfast;
 
 public class PedidoExpress extends Pedido {
 
-    public PedidoExpress(int idPedido, String direccionEntrega) {
-        super(idPedido, direccionEntrega, "Express");
+    private static final int TIEMPO_BASE_MIN = 10;
+    private static final double UMBRAL_KM = 5.0;
+    private static final int EXTRA_MIN = 5;
+
+    public PedidoExpress(int idPedido, String direccionEntrega, double distanciaKm) {
+        super(idPedido, direccionEntrega, distanciaKm);
     }
 
     @Override
-    public void asignarRepartidor() {
-        System.out.println("Pedido express #" + getIdPedido()
-                + " → Se asigna el repartidor más cercano con disponibilidad inmediata.");
+    protected String obtenerTipoPedido() {
+        return "Express";
     }
 
     @Override
-    public void asignarRepartidor(String nombreRepartidor) {
-        asignarRepartidor();
-        System.out.println("   → Repartidor '" + nombreRepartidor + "' asignado como el más cercano disponible.");
+    public int calcularTiempoEntrega() {
+        int tiempo = TIEMPO_BASE_MIN;
+        if (getDistanciaKm() > UMBRAL_KM) {
+            tiempo += EXTRA_MIN;
+        }
+        return tiempo;
     }
 }

@@ -2,19 +2,21 @@ package cl.speedfast;
 
 public class PedidoEncomienda extends Pedido {
 
-    public PedidoEncomienda(int idPedido, String direccionEntrega) {
-        super(idPedido, direccionEntrega, "Encomienda");
+    private static final int TIEMPO_BASE_MIN = 20;
+    private static final double MIN_POR_KM = 1.5;
+
+    public PedidoEncomienda(int idPedido, String direccionEntrega, double distanciaKm) {
+        super(idPedido, direccionEntrega, distanciaKm);
     }
 
     @Override
-    public void asignarRepartidor() {
-        System.out.println("Pedido de encomienda #" + getIdPedido()
-                + " → Se valida peso y embalaje antes de asignar repartidor.");
+    protected String obtenerTipoPedido() {
+        return "Encomienda";
     }
 
     @Override
-    public void asignarRepartidor(String nombreRepartidor) {
-        asignarRepartidor();
-        System.out.println("   → Repartidor '" + nombreRepartidor + "' asignado.");
+    public int calcularTiempoEntrega() {
+        // El enunciado exige ajustar el resultado a entero mediante redondeo
+        return Math.round((float) (TIEMPO_BASE_MIN + MIN_POR_KM * getDistanciaKm()));
     }
 }

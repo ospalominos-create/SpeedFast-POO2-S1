@@ -2,19 +2,21 @@ package cl.speedfast;
 
 public class PedidoComida extends Pedido {
 
-    public PedidoComida(int idPedido, String direccionEntrega) {
-        super(idPedido, direccionEntrega, "Comida");
+    private static final int TIEMPO_BASE_MIN = 15;
+    private static final int MIN_POR_KM = 2;
+
+    public PedidoComida(int idPedido, String direccionEntrega, double distanciaKm) {
+        super(idPedido, direccionEntrega, distanciaKm);
     }
 
     @Override
-    public void asignarRepartidor() {
-        System.out.println("Pedido de comida #" + getIdPedido()
-                + " → Se valida que el repartidor cuente con mochila térmica.");
+    protected String obtenerTipoPedido() {
+        return "Comida";
     }
 
     @Override
-    public void asignarRepartidor(String nombreRepartidor) {
-        asignarRepartidor();
-        System.out.println("   → Repartidor '" + nombreRepartidor + "' asignado.");
+    public int calcularTiempoEntrega() {
+        // Truncamiento simple: el enunciado no exige redondeo para Comida
+        return (int) (TIEMPO_BASE_MIN + MIN_POR_KM * getDistanciaKm());
     }
 }
